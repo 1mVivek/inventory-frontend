@@ -2,16 +2,28 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signOut
 } from "firebase/auth";
+
 import { auth } from "./firebase";
 
-export function login(email, password) {
-  return signInWithEmailAndPassword(auth, email, password);
+/* ---------- AUTH ACTIONS ---------- */
+
+export async function login(email, password) {
+  const res = await signInWithEmailAndPassword(auth, email, password);
+  return await res.user.getIdToken(); // ✅ Firebase JWT
 }
 
-export function signup(email, password) {
-  return createUserWithEmailAndPassword(auth, email, password);
+export async function signup(email, password) {
+  const res = await createUserWithEmailAndPassword(auth, email, password);
+  return await res.user.getIdToken();
 }
+
+export async function logout() {
+  await signOut(auth);
+}
+
+/* ---------- AUTH STATE ---------- */
 
 export function observeAuth(callback) {
   return onAuthStateChanged(auth, callback);
