@@ -1,5 +1,10 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
 
 import SignIn from "./auth/SignIn";
 import SignUp from "./auth/SignUp";
@@ -18,11 +23,11 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        {/* ---------- AUTH ---------- */}
+        {/* AUTH */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* ---------- PROTECTED APP ---------- */}
+        {/* PROTECTED APP */}
         <Route
           path="/"
           element={
@@ -39,7 +44,7 @@ export default function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
 
-        {/* ---------- FALLBACK ---------- */}
+        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/signin" />} />
       </Routes>
     </Router>
