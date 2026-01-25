@@ -1,25 +1,44 @@
-import { Button, TextField, Typography, Box } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { login } from "../services/auth";
 
-export default function SignIn({ setUser }) {
+export default function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const token = await login(email, password);
+
+      // 🔐 Store token (optional but useful)
+      localStorage.setItem("token", token);
+
+      navigate("/"); // ✅ go to dashboard
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
-    <Box sx={{ maxWidth: 400, mx: "auto", mt: 10 }}>
-      <Typography variant="h4">Sign In</Typography>
+    <div className="auth-page">
+      <h2>Sign In</h2>
 
-      <TextField fullWidth label="Email" margin="normal" />
-      <TextField fullWidth label="Password" type="password" margin="normal" />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
 
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ mt: 2 }}
-        onClick={() => setUser({ name: "Demo User" })}
-      >
-        Sign In
-      </Button>
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
-      <Typography sx={{ mt: 2, fontSize: 14 }}>
-        Forgot password? | New user? <a href="/signup">Sign up</a>
-      </Typography>
-    </Box>
+      <button onClick={handleLogin}>Login</button>
+    </div>
   );
 }
