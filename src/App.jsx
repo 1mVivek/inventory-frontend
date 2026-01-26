@@ -16,7 +16,7 @@ import Suppliers from "./pages/Suppliers";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./layout/Sidebar";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
