@@ -1,13 +1,13 @@
-export default function KPI({ title, value }) {
+export default function KPI({ title = "KPI", value = "-" }) {
   return (
     <div style={{
-      padding: "16px",
-      border: "1px solid #ddd",
+      padding: "12px",
+      border: "1px solid #ccc",
       borderRadius: "8px",
-      minWidth: "150px"
+      marginBottom: "12px"
     }}>
       <h4>{title}</h4>
-      <p style={{ fontSize: "20px", fontWeight: "bold" }}>{value}</p>
+      <strong>{value}</strong>
     </div>
   );
 }
