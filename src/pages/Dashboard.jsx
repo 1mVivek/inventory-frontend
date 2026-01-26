@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import KPI from "../components/KPI";
+import KPI from "../components/KPI.jsx";
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer
 } from "recharts";
