@@ -1,13 +1,14 @@
 import {
   AppBar,
   Toolbar,
-  Typography,
   IconButton,
+  Typography,
   Button,
+  Box
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../services/auth";
 
 export default function Topbar({ onMenuClick }) {
   const navigate = useNavigate();
@@ -15,28 +16,39 @@ export default function Topbar({ onMenuClick }) {
   const handleLogout = async () => {
     await logout();
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/signin");
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: "#020617",
+        borderBottom: "1px solid #1e293b"
+      }}
+    >
       <Toolbar>
+        {/* Mobile Menu */}
         <IconButton
           color="inherit"
           edge="start"
+          sx={{ mr: 2, display: { sm: "none" } }}
           onClick={onMenuClick}
-          sx={{ mr: 2, display: { md: "none" } }}
         >
           <MenuIcon />
         </IconButton>
 
-        <Typography sx={{ flexGrow: 1 }}>
+        {/* Title */}
+        <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Stock Management
         </Typography>
 
-        <Button color="inherit" onClick={handleLogout}>
-          Logout
-        </Button>
+        {/* Right Side */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Box>
       </Toolbar>
     </AppBar>
   );
