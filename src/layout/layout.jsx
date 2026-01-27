@@ -10,11 +10,11 @@ export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(prev => !prev);
+    setMobileOpen((prev) => !prev);
   };
 
   return (
-    <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#0b1020" }}>
+    <Box sx={{ display: "flex", minHeight: "100vh" }}>
       {/* Top Navigation */}
       <Topbar onMenuClick={handleDrawerToggle} />
 
@@ -27,17 +27,17 @@ export default function Layout() {
 
       {/* Main Content */}
       <Box
-  component="main"
-  sx={{
-    flexGrow: 1,
-    p: 2,
-    mt: "64px",              // pushes content below AppBar
-    ml: { sm: `${drawerWidth}px` }, // space for desktop sidebar
-    backgroundColor: "#0b1020",
-  }}
->
-  <Outlet />
-</Box>
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          mt: "64px", // AppBar height
+          ml: { sm: `${drawerWidth}px` },
+          backgroundColor: "background.default", // ✅ FIX
+        }}
+      >
+        <Outlet />
+      </Box>
     </Box>
   );
 }
