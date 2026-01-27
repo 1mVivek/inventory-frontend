@@ -8,9 +8,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 export default function Topbar({ onMenuClick }) {
   return (
-    <AppBar position="fixed">
+    <AppBar
+      position="fixed"
+      color="default" // 🔥 important
+      elevation={1}
+    >
       <Toolbar>
-        {/* Mobile menu */}
         <IconButton
           color="inherit"
           edge="start"
@@ -20,11 +23,7 @@ export default function Topbar({ onMenuClick }) {
           <MenuIcon />
         </IconButton>
 
-        {/* App title */}
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 600 }}
-        >
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Stock Management
         </Typography>
       </Toolbar>
