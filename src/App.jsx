@@ -2,7 +2,7 @@ import {
   HashRouter as Router,
   Routes,
   Route,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 
 import SignIn from "./auth/SignIn";
@@ -15,19 +15,18 @@ import Suppliers from "./pages/Suppliers";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 
-import Layout from "./layout/layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout from "./layout/layout";
 
 export default function App() {
   return (
     <Router>
       <Routes>
-
-        {/* AUTH ROUTES */}
+        {/* AUTH */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* PROTECTED APP */}
+        {/* PROTECTED */}
         <Route
           path="/"
           element={
@@ -44,9 +43,7 @@ export default function App() {
           <Route path="settings" element={<Settings />} />
         </Route>
 
-        {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/signin" />} />
-
       </Routes>
     </Router>
   );
