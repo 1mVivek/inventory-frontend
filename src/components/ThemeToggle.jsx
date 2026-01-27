@@ -12,17 +12,12 @@ export default function ThemeToggle() {
       <input
         type="checkbox"
         className="theme-switch__checkbox"
-        checked={theme.palette.mode === "dark"}
+        checked={theme.palette.mode === "dark"}   // ✅ REQUIRED
         onChange={toggleColorMode}
       />
-
       <div className="theme-switch__container">
         <div className="theme-switch__clouds"></div>
-
-        <div className="theme-switch__stars-container">
-          {/* SVG stars here */}
-        </div>
-
+        <div className="theme-switch__stars-container"></div>
         <div className="theme-switch__circle-container">
           <div className="theme-switch__sun-moon-container">
             <div className="theme-switch__moon">
