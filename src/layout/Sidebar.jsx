@@ -5,7 +5,7 @@ import {
   ListItemButton,
   ListItemText,
   Toolbar,
-  Box
+  Box,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
@@ -15,12 +15,18 @@ const items = [
   { text: "Orders", path: "/orders" },
   { text: "Suppliers", path: "/suppliers" },
   { text: "Reports", path: "/reports" },
-  { text: "Settings", path: "/settings" }
+  { text: "Settings", path: "/settings" },
 ];
 
 export default function Sidebar({ mobileOpen, onClose, drawerWidth }) {
   const drawer = (
-    <Box sx={{ height: "100%", backgroundColor: "#0f172a", color: "#fff" }}>
+    <Box
+      sx={{
+        height: "100%",
+        bgcolor: "background.paper",
+        color: "text.primary",
+      }}
+    >
       <Toolbar />
 
       <List>
@@ -33,11 +39,11 @@ export default function Sidebar({ mobileOpen, onClose, drawerWidth }) {
               sx={{
                 px: 3,
                 "&.active": {
-                  backgroundColor: "#1e293b"
+                  bgcolor: "action.selected",
                 },
                 "&:hover": {
-                  backgroundColor: "#1e293b"
-                }
+                  bgcolor: "action.hover",
+                },
               }}
             >
               <ListItemText primary={i.text} />
@@ -60,8 +66,8 @@ export default function Sidebar({ mobileOpen, onClose, drawerWidth }) {
           display: { xs: "block", sm: "none" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            borderRight: "1px solid #1e293b"
-          }
+            bgcolor: "background.paper",
+          },
         }}
       >
         {drawer}
@@ -74,8 +80,10 @@ export default function Sidebar({ mobileOpen, onClose, drawerWidth }) {
           display: { xs: "none", sm: "block" },
           "& .MuiDrawer-paper": {
             width: drawerWidth,
-            borderRight: "1px solid #1e293b"
-          }
+            bgcolor: "background.paper",
+            borderRight: "1px solid",
+            borderColor: "divider",
+          },
         }}
         open
       >
