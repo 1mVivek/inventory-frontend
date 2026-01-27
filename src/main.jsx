@@ -5,7 +5,7 @@ import { ThemeProvider, CssBaseline } from "@mui/material";
 import { ColorModeContext } from "./theme/ColorModeContext";
 import { getTheme } from "./theme";
 
-const Root = () => {
+function Root() {
   const [mode, setMode] = useState(
     localStorage.getItem("theme") || "dark"
   );
@@ -26,14 +26,14 @@ const Root = () => {
   const theme = useMemo(() => getTheme(mode), [mode]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
+    <ColorModeContext.Provider value={{ mode, ...colorMode }}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <App />
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
-};
+}
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
