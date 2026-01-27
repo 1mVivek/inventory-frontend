@@ -1,5 +1,13 @@
-import { Drawer, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  Toolbar,
+} from "@mui/material";
 import { Link } from "react-router-dom";
+
+const drawerWidth = 240;
 
 const items = [
   { text: "Dashboard", path: "/" },
@@ -10,16 +18,53 @@ const items = [
   { text: "Settings", path: "/settings" },
 ];
 
-export default function Sidebar() {
-  return (
-    <Drawer variant="permanent">
-      <List sx={{ width: 240 }}>
+export default function Sidebar({ mobileOpen, onClose }) {
+  const drawer = (
+    <>
+      <Toolbar />
+      <List>
         {items.map((i) => (
-          <ListItem button component={Link} to={i.path} key={i.text}>
+          <ListItem
+            button
+            key={i.text}
+            component={Link}
+            to={i.path}
+            onClick={onClose}
+          >
             <ListItemText primary={i.text} />
           </ListItem>
         ))}
       </List>
-    </Drawer>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { width: drawerWidth },
+        }}
+      >
+        {drawer}
+      </Drawer>
+
+      {/* Desktop */}
+      <Drawer
+        variant="permanent"
+        sx={{
+          display: { xs: "none", md: "block" },
+          "& .MuiDrawer-paper": { width: drawerWidth },
+        }}
+        open
+      >
+        {drawer}
+      </Drawer>
+    </>
   );
 }
