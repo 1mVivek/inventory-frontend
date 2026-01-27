@@ -4,9 +4,10 @@ import {
   IconButton,
   Typography,
   Button,
-  Box
+  Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import ThemeToggle from "../components/ThemeToggle";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/auth";
 
@@ -24,7 +25,7 @@ export default function Topbar({ onMenuClick }) {
       position="fixed"
       sx={{
         backgroundColor: "#020617",
-        borderBottom: "1px solid #1e293b"
+        borderBottom: "1px solid #1e293b",
       }}
     >
       <Toolbar>
@@ -38,14 +39,29 @@ export default function Topbar({ onMenuClick }) {
           <MenuIcon />
         </IconButton>
 
-        {/* Title */}
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        {/* App Title */}
+        <Typography
+          variant="h6"
+          sx={{ flexGrow: 1, fontWeight: 600 }}
+        >
           Stock Management
         </Typography>
 
-        {/* Right Side */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          <Button color="inherit" onClick={handleLogout}>
+        {/* Right Actions */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+          }}
+        >
+          <ThemeToggle />
+
+          <Button
+            color="inherit"
+            onClick={handleLogout}
+            sx={{ textTransform: "none" }}
+          >
             Logout
           </Button>
         </Box>
