@@ -27,20 +27,17 @@ export default function Layout() {
 
       {/* Main Content */}
       <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          backgroundColor: "#0b1020"
-        }}
-      >
-        {/* Push content below AppBar */}
-        <Toolbar />
-
-        {/* Routed pages */}
-        <Outlet />
-      </Box>
+  component="main"
+  sx={{
+    flexGrow: 1,
+    p: 2,
+    mt: "64px",              // pushes content below AppBar
+    ml: { sm: `${drawerWidth}px` }, // space for desktop sidebar
+    backgroundColor: "#0b1020",
+  }}
+>
+  <Outlet />
+</Box>
     </Box>
   );
 }
