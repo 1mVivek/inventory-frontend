@@ -51,3 +51,4 @@ export function ColorModeProvider({ children }) {
       {children}
     </ColorModeContext.Provider>
   );
+}
