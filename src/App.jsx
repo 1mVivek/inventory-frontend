@@ -2,8 +2,7 @@ import {
   HashRouter as Router,
   Routes,
   Route,
-  Navigate,
-  Outlet,
+  Navigate
 } from "react-router-dom";
 
 import SignIn from "./auth/SignIn";
@@ -16,14 +15,15 @@ import Suppliers from "./pages/Suppliers";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 
-import Sidebar from "./layout/Sidebar";
+import Layout from "./layout/layout";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
     <Router>
       <Routes>
-        {/* AUTH */}
+
+        {/* AUTH ROUTES */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
@@ -32,7 +32,7 @@ export default function App() {
           path="/"
           element={
             <ProtectedRoute>
-              <AppLayout />
+              <Layout />
             </ProtectedRoute>
           }
         >
@@ -46,18 +46,8 @@ export default function App() {
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/signin" />} />
+
       </Routes>
     </Router>
-  );
-}
-
-function AppLayout() {
-  return (
-    <div className="app-layout">
-      <Sidebar />
-      <main className="content">
-        <Outlet />
-      </main>
-    </div>
   );
 }
