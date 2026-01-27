@@ -10,8 +10,8 @@ export default function ThemeToggle() {
       <input
         type="checkbox"
         className="theme-switch__checkbox"
-        checked={mode === "dark"}   // ✅ HERE
-        onChange={toggleColorMode} // ✅ HERE
+        checked={mode === "dark"}
+        onChange={toggleColorMode}
       />
 
       <div className="theme-switch__container">
