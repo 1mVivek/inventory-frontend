@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, TextField, Typography, Box } from "@mui/material";
 import { signup } from "../services/auth";
+import { Button, TextField, Typography, Box } from "@mui/material";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -10,9 +10,12 @@ export default function SignUp() {
 
   const handleSignup = async () => {
     try {
-      await signup(email, password);
-      alert("Account created successfully!");
-      navigate("/signin");
+      const token = await signup(email, password);
+
+      // ✅ auto-login
+      localStorage.setItem("token", token);
+
+      navigate("/"); // go to dashboard
     } catch (err) {
       alert(err.message);
     }
@@ -20,12 +23,15 @@ export default function SignUp() {
 
   return (
     <Box sx={{ maxWidth: 400, mx: "auto", mt: 10 }}>
-      <Typography variant="h4">Sign Up</Typography>
+      <Typography variant="h4" mb={2}>
+        Sign Up
+      </Typography>
 
       <TextField
         fullWidth
         label="Email"
         margin="normal"
+        value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
@@ -34,6 +40,7 @@ export default function SignUp() {
         label="Password"
         type="password"
         margin="normal"
+        value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
@@ -45,6 +52,16 @@ export default function SignUp() {
       >
         Create Account
       </Button>
+
+      <Typography mt={2}>
+        Already have an account?{" "}
+        <span
+          style={{ color: "#7c7cff", cursor: "pointer" }}
+          onClick={() => navigate("/login")}
+        >
+          Login
+        </span>
+      </Typography>
     </Box>
   );
 }
