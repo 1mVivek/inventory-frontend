@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
+import { Button, TextField, Typography, Box } from "@mui/material";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -10,44 +11,54 @@ export default function SignIn() {
   const handleLogin = async () => {
     try {
       const token = await login(email, password);
-
-      // 🔐 Store token (optional but useful)
       localStorage.setItem("token", token);
-
-      navigate("/"); // ✅ go to dashboard
+      navigate("/");
     } catch (err) {
       alert(err.message);
     }
   };
 
   return (
-    <div className="auth-page">
-      <h2>Sign In</h2>
+    <Box sx={{ maxWidth: 400, mx: "auto", mt: 10 }}>
+      <Typography variant="h4" mb={2}>
+        Sign In
+      </Typography>
 
-      <input
-        type="email"
-        placeholder="Email"
+      <TextField
+        fullWidth
+        label="Email"
+        margin="normal"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
 
-      <input
+      <TextField
+        fullWidth
+        label="Password"
         type="password"
-        placeholder="Password"
+        margin="normal"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>Login</button>
-      <p style={{ marginTop: "12px" }}>
-  Don’t have an account?{" "}
-  <span
-    style={{ color: "#7c7cff", cursor: "pointer" }}
-    onClick={() => navigate("/signup")}
-  >
-    Sign Up
-  </span>
-</p>
-    </div>
+      <Button
+        fullWidth
+        variant="contained"
+        sx={{ mt: 2 }}
+        onClick={handleLogin}
+      >
+        Login
+      </Button>
+
+      <Typography mt={2}>
+        Don’t have an account?{" "}
+        <span
+          style={{ color: "#7c7cff", cursor: "pointer" }}
+          onClick={() => navigate("/signup")}
+        >
+          Sign Up
+        </span>
+      </Typography>
+    </Box>
   );
 }
