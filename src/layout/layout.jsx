@@ -1,23 +1,27 @@
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Toolbar } from "@mui/material";
+import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
 
 const drawerWidth = 240;
 
-export default function Layout({ children }) {
+export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(prev => !prev);
+  };
 
   return (
     <Box sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#0b1020" }}>
-      
-      {/* Topbar */}
-      <Topbar onMenuClick={() => setMobileOpen(true)} />
+      {/* Top Navigation */}
+      <Topbar onMenuClick={handleDrawerToggle} />
 
       {/* Sidebar */}
       <Sidebar
         mobileOpen={mobileOpen}
-        onClose={() => setMobileOpen(false)}
+        onClose={handleDrawerToggle}
         drawerWidth={drawerWidth}
       />
 
@@ -26,12 +30,16 @@ export default function Layout({ children }) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 2,
-          mt: "64px",
-          ml: { sm: `${drawerWidth}px` }
+          p: 3,
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: "#0b1020"
         }}
       >
-        {children}
+        {/* Push content below AppBar */}
+        <Toolbar />
+
+        {/* Routed pages */}
+        <Outlet />
       </Box>
     </Box>
   );
