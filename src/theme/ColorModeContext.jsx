@@ -1,18 +1,16 @@
 import { createContext, useMemo, useState, useEffect } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db } from "../services/firebase";
-import { getAuth } from "firebase/auth";
+import { db, auth } from "../services/firebase";
 
 export const ColorModeContext = createContext();
 
 export function ColorModeProvider({ children }) {
-  const auth = getAuth();
 
   const [mode, setMode] = useState(
     () => localStorage.getItem("theme") || "dark"
   );
 
-  // 🔁 Load from Firebase after login
+  //  Load from Firebase after login
   useEffect(() => {
     const loadTheme = async () => {
       const user = auth.currentUser;
