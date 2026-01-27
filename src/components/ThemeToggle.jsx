@@ -1,16 +1,18 @@
 import { useContext } from "react";
 import { ColorModeContext } from "../theme/ColorModeContext";
+import { useTheme } from "@mui/material/styles";
 import "./theme-toggle.css";
 
 export default function ThemeToggle() {
-  const { mode, toggleColorMode } = useContext(ColorModeContext);
+  const { toggleColorMode } = useContext(ColorModeContext);
+  const theme = useTheme();
 
   return (
     <label className="theme-switch">
       <input
         type="checkbox"
         className="theme-switch__checkbox"
-        checked={mode === "dark"}
+        checked={theme.palette.mode === "dark"}
         onChange={toggleColorMode}
       />
 
@@ -18,7 +20,7 @@ export default function ThemeToggle() {
         <div className="theme-switch__clouds"></div>
 
         <div className="theme-switch__stars-container">
-          {/* SVG stays same */}
+          {/* SVG stars here */}
         </div>
 
         <div className="theme-switch__circle-container">
