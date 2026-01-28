@@ -1,13 +1,17 @@
-export default function KPI({ title = "KPI", value = "-" }) {
+import { Card, CardContent, Typography } from "@mui/material";
+
+export default function KPI({ title, value, color = "#1976d2" }) {
   return (
-    <div style={{
-      padding: "12px",
-      border: "1px solid #ccc",
-      borderRadius: "8px",
-      marginBottom: "12px"
-    }}>
-      <h4>{title}</h4>
-      <strong>{value}</strong>
-    </div>
+    <Card sx={{ borderLeft: `6px solid ${color}` }}>
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          {title}
+        </Typography>
+
+        <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          {value}
+        </Typography>
+      </CardContent>
+    </Card>
   );
 }
