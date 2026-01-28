@@ -1,7 +1,12 @@
 import { Grid } from "@mui/material";
 import KPI from "../components/KPI";
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer
 } from "recharts";
 
 const data = [
@@ -12,14 +17,26 @@ const data = [
 
 export default function Dashboard() {
   return (
-    <Grid container spacing={2} padding={2}>
-      <KPI title="Total Products" value="120" />
-      <KPI title="Low Stock" value="8" />
-      <KPI title="Out of Stock" value="3" />
-      <KPI title="Inventory Value" value="$45,000" />
+    <Grid container spacing={2} sx={{ p: 2 }}>
 
-      <Grid item xs={12} height={300}>
-        <ResponsiveContainer>
+      <Grid item xs={12} sm={6} md={3}>
+        <KPI title="Total Products" value="120" />
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <KPI title="Low Stock" value="8" />
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <KPI title="Out of Stock" value="3" />
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={3}>
+        <KPI title="Inventory Value" value="₹45,000" />
+      </Grid>
+
+      <Grid item xs={12} sx={{ height: 300 }}>
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <XAxis dataKey="month" />
             <YAxis />
@@ -28,6 +45,7 @@ export default function Dashboard() {
           </LineChart>
         </ResponsiveContainer>
       </Grid>
+
     </Grid>
   );
 }
