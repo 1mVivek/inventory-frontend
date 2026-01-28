@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import KPI from "../components/KPI";
+import useDashboardStats from "../hooks/useDashboardStats";
 import {
   LineChart,
   Line,
@@ -16,26 +17,30 @@ const data = [
 ];
 
 export default function Dashboard() {
+const stats = useDashboardStats();
   return (
     <Grid container spacing={2} sx={{ p: 2 }}>
 
       <Grid item xs={12} sm={6} md={3}>
-        <KPI title="Total Products" value="120" />
-      </Grid>
+  <KPI title="Total Products" value={stats.totalProducts} />
+</Grid>
 
-      <Grid item xs={12} sm={6} md={3}>
-        <KPI title="Low Stock" value="8" />
-      </Grid>
+<Grid item xs={12} sm={6} md={3}>
+  <KPI title="Low Stock" value={stats.lowStock} />
+</Grid>
 
-      <Grid item xs={12} sm={6} md={3}>
-        <KPI title="Out of Stock" value="3" />
-      </Grid>
+<Grid item xs={12} sm={6} md={3}>
+  <KPI title="Out of Stock" value={stats.outOfStock} />
+</Grid>
 
-      <Grid item xs={12} sm={6} md={3}>
-        <KPI title="Inventory Value" value="₹45,000" />
-      </Grid>
+<Grid item xs={12} sm={6} md={3}>
+  <KPI
+    title="Inventory Value"
+    value={`₹${stats.inventoryValue.toLocaleString()}`}
+  />
+</Grid>
 
-      <Grid item xs={12} sx={{ height: 300 }}>
+      <Grid item xs={12} xs={{ height: 300 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
             <XAxis dataKey="month" />
