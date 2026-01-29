@@ -4,85 +4,46 @@ import {
   DialogContent,
   TextField,
   Button,
-  Stack,
 } from "@mui/material";
 import { useState } from "react";
-import localforage from "localforage";
+import { addItem } from "../services/api";
 
 export default function ProductModal({ open, onClose }) {
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
+  const [form, setForm] = useState({
+    name: "",
+    category: "",
+    price: "",
+    stock: "",
+  });
 
-  const handleSave = async () => {
-    if (!name || !category || !price || !stock) {
-      alert("Fill all fields");
-      return;
-    }
-
-    const newProduct = {
-      id: crypto.randomUUID(),
-      sku: "SKU-" + Math.floor(Math.random() * 10000),
-      name,
-      category,
-      price: Number(price),
-      quantity: Number(stock),
-      createdAt: Date.now(),
-    };
-
-    const existing = (await localforage.getItem("products")) || [];
-    await localforage.setItem("products", [...existing, newProduct]);
-
-    // reset form
-    setName("");
-    setCategory("");
-    setPrice("");
-    setStock("");
-
+  async function save() {
+    await addItem({
+      ...form,
+      price: Number(form.price),
+      stock: Number(form.stock),
+    });
     onClose();
-  };
+  }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add Product</DialogTitle>
-
       <DialogContent>
-        <Stack spacing={2} mt={1}>
-          <TextField
-            label="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            fullWidth
-          />
-
-          <TextField
-            label="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            fullWidth
-          />
-
-          <TextField
-            label="Price"
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            fullWidth
-          />
-
-          <TextField
-            label="Stock"
-            type="number"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            fullWidth
-          />
-
-          <Button variant="contained" onClick={handleSave}>
-            Save
-          </Button>
-        </Stack>
+        <TextField fullWidth label="Name" margin="normal"
+          onChange={e => setForm({ ...form, name: e.target.value })}
+        />
+        <TextField fullWidth label="Category" margin="normal"
+          onChange={e => setForm({ ...form, category: e.target.value })}
+        />
+        <TextField fullWidth label="Price" margin="normal"
+          onChange={e => setForm({ ...form, price: e.target.value })}
+        />
+        <TextField fullWidth label="Stock" margin="normal"
+          onChange={e => setForm({ ...form, stock: e.target.value })}
+        />
+        <Button sx={{ mt: 2 }} variant="contained" onClick={save}>
+          Save
+        </Button>
       </DialogContent>
     </Dialog>
   );
