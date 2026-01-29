@@ -1,34 +1,18 @@
 import { useEffect, useState } from "react";
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-} from "firebase/firestore";
-import { db } from "../services/firebase";
+import { getStockActivities } from "../storage/stockActivityStore";
 
 export default function useStockActivity() {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const q = query(
-      collection(db, "stockActivities"),
-      orderBy("createdAt", "desc"),
-      limit(20)
-    );
-
-    const unsub = onSnapshot(q, snap => {
-      const rows = snap.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setActivities(rows);
+    async function load() {
+      const data = await getStockActivities();
+      setActivities(data);
       setLoading(false);
-    });
+    }
 
-    return () => unsub();
+    load();
   }, []);
 
   return { activities, loading };
