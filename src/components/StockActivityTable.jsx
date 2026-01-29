@@ -11,6 +11,7 @@ import {
   CircularProgress,
   Box,
 } from "@mui/material";
+
 import useStockActivity from "../hooks/useStockActivity";
 
 export default function StockActivityTable() {
@@ -64,9 +65,7 @@ export default function StockActivityTable() {
               <TableCell>{row.quantity}</TableCell>
 
               <TableCell>
-                {row.createdAt?.toDate
-                  ? row.createdAt.toDate().toLocaleString()
-                  : "-"}
+                {new Date(row.createdAt).toLocaleString()}
               </TableCell>
             </TableRow>
           ))}
