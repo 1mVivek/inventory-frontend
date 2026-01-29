@@ -39,3 +39,4 @@ return (
     <ProductModal open={open} onClose={() => setOpen(false)} />
   </div>
 );
+}
