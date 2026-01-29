@@ -26,9 +26,7 @@ export default function ColorModeProvider({ children }) {
   const theme = useMemo(
     () =>
       createTheme({
-        palette: {
-          mode,
-        },
+        palette: { mode },
       }),
     [mode]
   );
