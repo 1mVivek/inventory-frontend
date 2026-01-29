@@ -1,54 +1,41 @@
-import { createContext, useMemo, useState, useEffect } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { db, auth } from "../services/firebase";
+import { createContext, useMemo, useState } from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
-export const ColorModeContext = createContext();
+export const ColorModeContext = createContext({
+  toggleColorMode: () => {},
+});
 
-export function ColorModeProvider({ children }) {
-
+export default function ColorModeProvider({ children }) {
   const [mode, setMode] = useState(
-    () => localStorage.getItem("theme") || "dark"
+    localStorage.getItem("theme") || "dark"
   );
 
-  //  Load from Firebase after login
-  useEffect(() => {
-    const loadTheme = async () => {
-      const user = auth.currentUser;
-      if (!user) return;
+  const colorMode = useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode(prev => {
+          const next = prev === "light" ? "dark" : "light";
+          localStorage.setItem("theme", next);
+          return next;
+        });
+      },
+    }),
+    []
+  );
 
-      const ref = doc(db, "users", user.uid);
-      const snap = await getDoc(ref);
-
-      if (snap.exists() && snap.data().theme) {
-        setMode(snap.data().theme);
-        localStorage.setItem("theme", snap.data().theme);
-      }
-    };
-
-    loadTheme();
-  }, []);
-
-  const toggleColorMode = async () => {
-    const newMode = mode === "dark" ? "light" : "dark";
-    setMode(newMode);
-    localStorage.setItem("theme", newMode);
-
-    const user = auth.currentUser;
-    if (user) {
-      await updateDoc(doc(db, "users", user.uid), {
-        theme: newMode,
-      });
-    }
-  };
-
-  const value = useMemo(
-    () => ({ mode, toggleColorMode }),
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+        },
+      }),
     [mode]
   );
 
   return (
-    <ColorModeContext.Provider value={value}>
-      {children}
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
