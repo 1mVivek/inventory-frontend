@@ -5,23 +5,28 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "../services/firebase";
+import { addStockActivity } from "../storage/stockActivityStore";
 
-/* ===============================
-   RECEIVE PURCHASE ORDER
+/* ================================
+   RECEIVE PURCHASE ORDER (STOCK IN)
 ================================ */
+
 export async function receivePurchaseOrder(poId) {
   const poRef = doc(db, "purchaseOrders", poId);
+
+  let poData;
 
   await runTransaction(db, async (transaction) => {
     const poSnap = await transaction.get(poRef);
     if (!poSnap.exists()) throw new Error("PO not found");
 
-    const po = poSnap.data();
-    if (po.status === "received") {
+    poData = poSnap.data();
+
+    if (poData.status === "received") {
       throw new Error("PO already received");
     }
 
-    for (const item of po.items) {
+    for (const item of poData.items) {
       const productRef = doc(db, "products", item.productId);
       const productSnap = await transaction.get(productRef);
 
@@ -52,11 +57,21 @@ export async function receivePurchaseOrder(poId) {
       receivedAt: Timestamp.now(),
     });
   });
+
+  // 🔹 LOCAL ACTIVITY LOG (OFFLINE SAFE)
+  for (const item of poData.items) {
+    await addStockActivity({
+      productName: item.productId,
+      type: "IN",
+      quantity: item.quantity,
+    });
+  }
 }
 
-/* ===============================
-   SELL PRODUCT
+/* ================================
+   SELL PRODUCT (STOCK OUT)
 ================================ */
+
 export async function sellProduct(productId, quantity) {
   const productRef = doc(db, "products", productId);
 
@@ -65,6 +80,7 @@ export async function sellProduct(productId, quantity) {
     if (!snap.exists()) throw new Error("Product not found");
 
     const currentQty = snap.data().quantity;
+
     if (currentQty < quantity) {
       throw new Error("Insufficient stock");
     }
@@ -83,20 +99,30 @@ export async function sellProduct(productId, quantity) {
       createdAt: Timestamp.now(),
     });
   });
+
+  // 🔹 LOCAL ACTIVITY LOG
+  await addStockActivity({
+    productName: productId,
+    type: "OUT",
+    quantity,
+  });
 }
 
-/* ===============================
-      MANUAL STOCK ADJUST
+/* ================================
+   MANUAL STOCK ADJUST
 ================================ */
+
 export async function adjustStock(productId, newQuantity) {
   const productRef = doc(db, "products", productId);
+
+  let diff = 0;
 
   await runTransaction(db, async (transaction) => {
     const snap = await transaction.get(productRef);
     if (!snap.exists()) throw new Error("Product not found");
 
     const oldQty = snap.data().quantity;
-    const diff = newQuantity - oldQty;
+    diff = newQuantity - oldQty;
 
     if (diff === 0) return;
 
@@ -114,4 +140,13 @@ export async function adjustStock(productId, newQuantity) {
       createdAt: Timestamp.now(),
     });
   });
+
+  // 🔹 LOCAL ACTIVITY LOG
+  if (diff !== 0) {
+    await addStockActivity({
+      productName: productId,
+      type: diff > 0 ? "IN" : "OUT",
+      quantity: Math.abs(diff),
+    });
+  }
 }
