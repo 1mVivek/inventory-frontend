@@ -6,9 +6,9 @@ import {
   TableBody,
 } from "@mui/material";
 
-export default function ProductTable({ items }) {
-  if (!items?.length) {
-    return <p style={{ opacity: 0.7 }}>No products yet</p>;
+export default function ProductTable({ products }) {
+  if (!products.length) {
+    return <p>No products yet</p>;
   }
 
   return (
@@ -21,14 +21,13 @@ export default function ProductTable({ items }) {
           <TableCell>Stock</TableCell>
         </TableRow>
       </TableHead>
-
       <TableBody>
-        {items.map(item => (
-          <TableRow key={item.id}>
-            <TableCell>{item.name}</TableCell>
-            <TableCell>{item.category}</TableCell>
-            <TableCell>₹ {item.price}</TableCell>
-            <TableCell>{item.stock}</TableCell>
+        {products.map((p) => (
+          <TableRow key={p.id}>
+            <TableCell>{p.name}</TableCell>
+            <TableCell>{p.category}</TableCell>
+            <TableCell>₹{p.price}</TableCell>
+            <TableCell>{p.stock}</TableCell>
           </TableRow>
         ))}
       </TableBody>
