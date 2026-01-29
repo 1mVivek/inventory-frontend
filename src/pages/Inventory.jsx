@@ -1,35 +1,32 @@
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
 import ProductTable from "../components/ProductTable";
 import ProductModal from "../components/ProductModal";
-import { getItems } from "../services/api";
+import { useState } from "react";
 
 export default function Inventory() {
   const [open, setOpen] = useState(false);
-  const [items, setItems] = useState([]);
+  const [products, setProducts] = useState([]);
 
-  async function load() {
-    const data = await getItems();
-    setItems(data);
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
+  const handleAddProduct = (product) => {
+    setProducts((prev) => [...prev, product]);
+  };
 
   return (
     <div style={{ padding: 20 }}>
-      <Button variant="contained" onClick={() => setOpen(true)}>
-        Add New Product
+      <Button
+        variant="contained"
+        onClick={() => setOpen(true)}
+        sx={{ mr: 2 }}
+      >
+        ADD NEW PRODUCT
       </Button>
 
-      <ProductTable items={items} />
+      <ProductTable products={products} />
+
       <ProductModal
         open={open}
-        onClose={() => {
-          setOpen(false);
-          load();
-        }}
+        onClose={() => setOpen(false)}
+        onAddProduct={handleAddProduct}
       />
     </div>
   );
