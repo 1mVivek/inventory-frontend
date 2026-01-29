@@ -6,9 +6,8 @@ import {
   Button,
 } from "@mui/material";
 import { useState } from "react";
-import { addItem } from "../services/api";
 
-export default function ProductModal({ open, onClose }) {
+export default function ProductModal({ open, onClose, onAddProduct }) {
   const [form, setForm] = useState({
     name: "",
     category: "",
@@ -16,60 +15,57 @@ export default function ProductModal({ open, onClose }) {
     stock: "",
   });
 
-  function update(key, value) {
-    setForm(prev => ({ ...prev, [key]: value }));
-  }
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  async function save() {
-    if (!form.name) return alert("Name required");
-
-    await addItem({
-      name: form.name,
-      category: form.category,
+  const handleSave = () => {
+    onAddProduct({
+      ...form,
       price: Number(form.price),
       stock: Number(form.stock),
+      id: Date.now(),
     });
-
     onClose();
-  }
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose}>
       <DialogTitle>Add Product</DialogTitle>
       <DialogContent>
         <TextField
+          name="name"
           label="Name"
           fullWidth
           margin="normal"
-          onChange={e => update("name", e.target.value)}
+          onChange={handleChange}
         />
         <TextField
+          name="category"
           label="Category"
           fullWidth
           margin="normal"
-          onChange={e => update("category", e.target.value)}
+          onChange={handleChange}
         />
         <TextField
+          name="price"
           label="Price"
           type="number"
           fullWidth
           margin="normal"
-          onChange={e => update("price", e.target.value)}
+          onChange={handleChange}
         />
         <TextField
+          name="stock"
           label="Stock"
           type="number"
           fullWidth
           margin="normal"
-          onChange={e => update("stock", e.target.value)}
+          onChange={handleChange}
         />
 
-        <Button
-          variant="contained"
-          sx={{ mt: 2 }}
-          onClick={save}
-        >
-          Save
+        <Button variant="contained" sx={{ mt: 2 }} onClick={handleSave}>
+          SAVE
         </Button>
       </DialogContent>
     </Dialog>
