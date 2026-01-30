@@ -26,7 +26,7 @@ export default function Inventory() {
       <ProductModal
         open={open}
         onClose={() => setOpen(false)}
-        onAddProduct={handleAddProduct}
+        onAddProduct={handleAddProduct} 
       />
     </div>
   );
