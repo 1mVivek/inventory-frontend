@@ -1,4 +1,4 @@
-const BASE_URL = "https://backend-1-c9cz.onrender.com";
+const BASE_URL = "https://inventory-backend-1-c9cz.onrender.com/";
 
 // PRODUCTS
 export async function getProducts() {
