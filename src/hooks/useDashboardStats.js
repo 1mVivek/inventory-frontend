@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
-import { getItems } from "../services/api";
+import { getProducts } from "../services/api";
 
 export default function useDashboardStats() {
-  const [stats, setStats] = useState(null);
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    totalStock: 0,
+    inventoryValue: 0,
+  });
 
   useEffect(() => {
-    getItems().then(items => {
-      const totalProducts = items.length;
-      const lowStock = items.filter(i => i.stock < 5).length;
-      const outOfStock = items.filter(i => i.stock === 0).length;
-      const inventoryValue = items.reduce(
-        (sum, i) => sum + i.price * i.stock,
-        0
-      );
+    const loadStats = async () => {
+      try {
+        const products = await getProducts();
 
-      setStats({
-        totalProducts,
-        lowStock,
-        outOfStock,
-        inventoryValue,
-      });
-    });
+        const totalProducts = products.length;
+        const totalStock = products.reduce(
+          (sum, p) => sum + Number(p.stock || 0),
+          0
+        );
+        const inventoryValue = products.reduce(
+          (sum, p) => sum + Number(p.price || 0) * Number(p.stock || 0),
+          0
+        );
+
+        setStats({ totalProducts, totalStock, inventoryValue });
+      } catch (err) {
+        console.error("Dashboard stats error:", err);
+      }
+    };
+
+    loadStats();
   }, []);
 
   return stats;
