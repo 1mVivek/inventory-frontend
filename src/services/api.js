@@ -1,31 +1,29 @@
-import { getToken } from "./auth";
+const BASE_URL = "https://backend-1-c9cz.onrender.com";
 
-const BASE_URL = "https://inventory-backend-wick.onrender.com";
-
-async function authFetch(url, options = {}) {
-  const token = await getToken();
-  return fetch(`${BASE_URL}${url}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
-}
-
-export async function getItems() {
-  const res = await authFetch("/items");
+// PRODUCTS
+export async function getProducts() {
+  const res = await fetch(`${BASE_URL}/products`);
   return res.json();
 }
 
-export async function addItem(data) {
-  const res = await authFetch("/items", {
+export async function addProduct(product) {
+  const res = await fetch(`${BASE_URL}/products`, {
     method: "POST",
-    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
   });
   return res.json();
 }
 
-export async function deleteItem(id) {
-  await authFetch(`/items/${id}`, { method: "DELETE" });
+export async function deleteProduct(id) {
+  const res = await fetch(`${BASE_URL}/products/${id}`, {
+    method: "DELETE",
+  });
+  return res.json();
+}
+
+// ACTIVITY
+export async function getActivity() {
+  const res = await fetch(`${BASE_URL}/activity`);
+  return res.json();
 }
